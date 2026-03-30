@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tes Lisan Bahasa Inggris</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c8a45a;
+  --gold-dim: rgba(200,164,90,0.15);
+  --gold-border: rgba(200,164,90,0.25);
+  --dark: #0a0a10;
+  --card: #111118;
+  --card2: #18181f;
+  --text: #ede8dc;
+  --muted: #5a5768;
+  --soft: #2a2835;
+  --green: #52c99a;
+  --green-dim: rgba(82,201,154,0.12);
+  --red: #e06060;
+  --red-dim: rgba(224,96,96,0.12);
+  --radius: 16px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Outfit', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* Ambient background */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+body::before {
+  width: 500px; height: 400px;
+  background: radial-gradient(ellipse, rgba(200,164,90,0.06) 0%, transparent 70%);
+  top: -100px; left: -100px;
+}
+body::after {
+  width: 400px; height: 500px;
+  background: radial-gradient(ellipse, rgba(82,100,200,0.05) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+}
+
+/* ── Card ── */
+.card {
+  position: relative;
+  z-index: 1;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 460px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 0 0 1px rgba(200,164,90,0.07) inset,
+              0 40px 100px rgba(0,0,0,0.7),
+              0 0 80px rgba(200,164,90,0.04);
+  animation: cardIn 0.7s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity:0; transform: translateY(24px) scale(0.98); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+.eyebrow-text {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.subtitle {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+/* ── Divider ── */
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,164,90,0.18), transparent);
+  margin: 24px 0;
+}
+
+/* ── Label ── */
+.field-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ── Input ── */
+input[type="text"] {
+  width: 100%;
+  background: var(--card2);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 16px;
+}
+input[type="text"]:focus {
+  border-color: rgba(200,164,90,0.45);
+  box-shadow: 0 0 0 3px rgba(200,164,90,0.07);
+}
+input[type="text"]::placeholder { color: var(--muted); }
+
+/* ── Toggle ── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+}
+.toggle-row input { display: none; }
+.toggle-track {
+  width: 40px; height: 22px;
+  background: var(--soft);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 99px;
+  position: relative;
+  transition: all 0.25s;
+  flex-shrink: 0;
+}
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 14px; height: 14px;
+  background: var(--muted);
+  border-radius: 50%;
+  transition: all 0.25s;
+}
+.toggle-row input:checked ~ .toggle-track {
+  background: var(--gold-dim);
+  border-color: var(--gold-border);
+}
+.toggle-row input:checked ~ .toggle-track::after {
+  transform: translateX(18px);
+  background: var(--gold);
+}
+.toggle-label { font-size: 13px; color: var(--muted); }
+
+/* ── Buttons ── */
+.btn-start {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #c8a45a 0%, #a07830 100%);
+  border: none;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #1a0f00;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  box-shadow: 0 4px 24px rgba(200,164,90,0.22);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,164,90,0.32); filter: brightness(1.06); }
+.btn-start:active { transform: translateY(0); }
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.btn-sec {
+  padding: 12px;
+  background: var(--card2);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 11px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-sec:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.14); transform: translateY(-1px); }
+.btn-sec.active {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  color: var(--gold);
+  animation: mic-pulse 1.4s ease-in-out infinite;
+}
+@keyframes mic-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(200,164,90,0); }
+  50%      { box-shadow: 0 0 0 6px rgba(200,164,90,0.12); }
+}
+
+/* ── Progress ── */
+.progress-area { margin-bottom: 22px; }
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 7px;
+  letter-spacing: 0.4px;
+}
+.progress-track {
+  height: 3px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #f0d080);
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+/* ── Question box ── */
+.q-box {
+  background: var(--card2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 24px 20px;
+  margin-bottom: 18px;
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s, box-shadow 0.35s;
+}
+.q-box::before {
+  content: '\201C';
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px;
+  color: rgba(200,164,90,0.1);
+  position: absolute;
+  top: 2px; left: 10px;
+  line-height: 1;
+  pointer-events: none;
+}
+#soal {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+.q-box.correct { border-color: rgba(82,201,154,0.45); box-shadow: 0 0 28px rgba(82,201,154,0.1); }
+.q-box.wrong   { border-color: rgba(224,96,96,0.45);  box-shadow: 0 0 28px rgba(224,96,96,0.1); }
+
+/* ── Feedback ── */
+.feedback-area {
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+#hasil { font-size: 12px; color: var(--muted); font-style: italic; text-align: center; }
+
+#status {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  min-height: 38px;
+  text-align: center;
+}
+.status-benar {
+  color: var(--green);
+  animation: pop-in 0.4s cubic-bezier(0.16,1,0.3,1) both, green-glow 1.6s ease-in-out infinite;
+}
+.status-salah {
+  color: var(--red);
+  animation: pop-in 0.25s ease both, shake 0.55s 0.2s ease both;
+}
+
+@keyframes pop-in {
+  from { opacity:0; transform: scale(0.4) translateY(12px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+@keyframes green-glow {
+  0%,100% { text-shadow: 0 0 16px rgba(82,201,154,0.5); }
+  50%      { text-shadow: 0 0 36px rgba(82,201,154,0.9), 0 0 70px rgba(82,201,154,0.35); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  18%     { transform: translateX(-9px) rotate(-1.5deg); }
+  36%     { transform: translateX(9px)  rotate(1.5deg); }
+  54%     { transform: translateX(-5px); }
+  72%     { transform: translateX(5px); }
+  90%     { transform: translateX(-2px); }
+}
+
+#skor {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--gold);
+  text-align: center;
+}
+
+/* ── Finish ── */
+.finish-inner {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+.finish-inner .finish-label {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.finish-inner .big-score {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  text-shadow: 0 0 50px rgba(200,164,90,0.35);
+  animation: score-reveal 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes score-reveal {
+  from { opacity:0; transform: scale(0.6); }
+  to   { opacity:1; transform: scale(1); }
+}
+.finish-inner .max-score {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ── Particles ── */
+#ptx {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+.pt {
+  position: absolute;
+  border-radius: 50%;
+  animation: pt-fly var(--d) ease-out forwards;
+}
+@keyframes pt-fly {
+  0%   { opacity:1; transform: translate(0,0) scale(1); }
+  100% { opacity:0; transform: translate(var(--tx),var(--ty)) scale(0.1); }
+}
+
+/* ── Loading state ── */
+.loading-msg {
+  text-align: center;
+  padding: 20px 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.dots::after {
+  content: '';
+  animation: dots 1.4s steps(4,end) infinite;
+}
+@keyframes dots {
+  0%  { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+/* Test area hidden initially */
+#areaTes { display: none; animation: fadeIn 0.4s ease both; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+</style>
+</head>
+
+<body>
+<div id="ptx"></div>
+
+<div class="card">
+
+  <!-- Header -->
+  <div class="eyebrow">
+    <div class="eyebrow-dot"></div>
+    <span class="eyebrow-text">English Assessment</span>
+  </div>
+  <h1>Tes Lisan<br>Bahasa Inggris</h1>
+  <p class="subtitle">Ucapkan jawaban dengan jelas dan percaya diri</p>
+
+  <!-- Setup form -->
+  <div id="setupForm">
+    <label class="field-label" for="nama">Nama Siswa</label>
+    <input type="text" id="nama" placeholder="Masukkan nama kamu...">
+
+    <label class="toggle-row">
+      <input type="checkbox" id="suara" checked>
+      <span class="toggle-track"></span>
+      <span class="toggle-label">🔊 Bacakan soal</span>
+    </label>
+
+    <div id="loadingMsg" class="loading-msg" style="display:none;">
+      Memuat soal<span class="dots"></span>
+    </div>
+
+    <button class="btn-start" onclick="mulaiTes()">Mulai Tes →</button>
+  </div>
+
+  <!-- Test area -->
+  <div id="areaTes">
+    <div class="rule"></div>
+
+    <div class="progress-area">
+      <div class="progress-meta">
+        <span id="progressLabel">Soal 1</span>
+        <span id="progressCount">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="q-box" id="qBox">
+      <div id="soal">—</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-sec" id="btnJawab" onclick="jawab()">🎤 Jawab</button>
+      <button class="btn-sec" onclick="ulang()">🔁 Ulangi</button>
+    </div>
+
+    <div class="feedback-area">
+      <p id="hasil"></p>
+      <p id="status"></p>
+      <p id="skor"></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// =====================
+// 🔥 GANTI DENGAN LINK KAMU
+// =====================
+const API_URL = "https://script.google.com/macros/s/AKfycbzK3SMITynsQ9l5a71b3liCfWMsYjt0qfTfigd1MTXeRHjYarNvgZx667x0sT737rJMVA/exec";
+
+let dataSoal = [];
+let index = 0;
+let skor = 0;
+let nama = "";
+
+// =====================
+// AMBIL SOAL
+// =====================
+document.getElementById("loadingMsg").style.display = "block";
+
+fetch(API_URL + "?action=getSoal")
+  .then(res => res.json())
+  .then(data => {
+    dataSoal = data;
+    document.getElementById("loadingMsg").style.display = "none";
+  })
+  .catch(err => {
+    document.getElementById("loadingMsg").style.display = "none";
+    alert("Gagal ambil soal! Cek koneksi atau URL API.");
+    console.error(err);
+  });
+
+// =====================
+// MULAI TES
+// =====================
+function mulaiTes() {
+  nama = document.getElementById("nama").value.trim();
+  if (!nama) { alert("Isi nama dulu!"); return; }
+  if (!dataSoal.length) { alert("Soal belum dimuat. Tunggu sebentar!"); return; }
+
+  document.getElementById("setupForm").style.display = "none";
+  document.getElementById("areaTes").style.display = "block";
+  tampilSoal();
+}
+
+// =====================
+// TAMPILKAN SOAL
+// =====================
+function tampilSoal() {
+  const soal = dataSoal[index].soal;
+  const total = dataSoal.length;
+
+  document.getElementById("soal").innerText = soal;
+  document.getElementById("status").innerText = "";
+  document.getElementById("status").className = "";
+  document.getElementById("hasil").innerText = "";
+  document.getElementById("skor").innerText = "Skor: " + skor;
+  document.getElementById("qBox").className = "q-box";
+
+  document.getElementById("progressLabel").innerText = "Soal " + (index + 1);
+  document.getElementById("progressCount").innerText = index + " / " + total;
+  document.getElementById("progressBar").style.width = ((index / total) * 100) + "%";
+
+  bacaSoal(soal);
+}
+
+// =====================
+// TEXT TO SPEECH
+// =====================
+function bacaSoal(teks) {
+  if (!document.getElementById("suara").checked) return;
+  const u = new SpeechSynthesisUtterance(teks);
+  u.lang = "en-US"; u.rate = 0.9;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+function ulang() { bacaSoal(dataSoal[index].soal); }
+
+// =====================
+// VOICE INPUT
+// =====================
+function jawab() {
+  const btn = document.getElementById("btnJawab");
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert("Browser tidak mendukung Speech Recognition."); return; }
+
+  const recognition = new SR();
+  recognition.lang = "en-US";
+  recognition.start();
+
+  btn.classList.add("active");
+  btn.innerText = "🔴 Mendengarkan...";
+
+  recognition.onresult = function(e) {
+    btn.classList.remove("active");
+    btn.innerText = "🎤 Jawab";
+    let teks = e.results[0][0].transcript.toLowerCase().replace(/[^\w\s]/gi, "");
+    document.getElementById("hasil").innerText = "Jawaban: " + teks;
+    cekJawaban(teks);
+  };
+
+  recognition.onerror = function(e) {
+    btn.classList.remove("active");
+    btn.innerText = "🎤 Jawab";
+    alert("Mic error: " + e.error);
+  };
+}
+
+// =====================
+// CEK JAWABAN
+// =====================
+function cekJawaban(teks) {
+  const daftar = dataSoal[index].jawaban;
+  let benar = daftar.some(k => teks.includes(k.trim()));
+
+  const statusEl = document.getElementById("status");
+  const qBox = document.getElementById("qBox");
+
+  if (benar) {
+    skor += 10;
+    statusEl.innerText = "✔ Benar!";
+    statusEl.className = "status-benar";
+    qBox.className = "q-box correct";
+    burst(true);
+  } else {
+    statusEl.innerText = "✘ Salah";
+    statusEl.className = "status-salah";
+    qBox.className = "q-box wrong";
+    burst(false);
+  }
+
+  document.getElementById("skor").innerText = "Skor: " + skor;
+
+  index++;
+  if (index < dataSoal.length) {
+    setTimeout(tampilSoal, 1800);
+  } else {
+    setTimeout(selesai, 1800);
+  }
+}
+
+// =====================
+// SELESAI TES
+// =====================
+function selesai() {
+  const total = dataSoal.length;
+  document.getElementById("progressBar").style.width = "100%";
+  document.getElementById("progressCount").innerText = total + " / " + total;
+  document.getElementById("progressLabel").innerText = "Selesai 🎉";
+
+  document.getElementById("qBox").className = "q-box";
+  document.getElementById("qBox").innerHTML = `
+    <div class="finish-inner">
+      <div class="finish-label">Tes Selesai</div>
+      <div class="big-score">${skor}</div>
+      <div class="max-score">dari ${total * 10} poin</div>
+    </div>`;
+
+  document.getElementById("status").innerText = "";
+  document.getElementById("hasil").innerText = "";
+  document.getElementById("skor").innerText = "";
+  document.querySelector(".btn-row").style.display = "none";
+
+  burst(true, 55);
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ nama, skor })
+  }).catch(console.error);
+}
+
+// =====================
+// PARTICLE BURST
+// =====================
+function burst(ok, n) {
+  n = n || 30;
+  const c = document.getElementById("ptx");
+  const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+  const colors = ok
+    ? ["#52c99a","#90eac0","#f0d080","#c8a45a","#ffffff"]
+    : ["#e06060","#ff9999","#ffcccc","#cc3333"];
+
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement("div");
+    p.className = "pt";
+    const sz = 5 + Math.random() * 9;
+    const ang = Math.random() * Math.PI * 2;
+    const dist = 90 + Math.random() * 180;
+    const tx = (Math.cos(ang) * dist).toFixed(1) + "px";
+    const ty = (Math.sin(ang) * dist - 60 - Math.random() * 140).toFixed(1) + "px";
+    const d = (0.65 + Math.random() * 0.85).toFixed(2) + "s";
+    const col = colors[Math.floor(Math.random() * colors.length)];
+    p.style.cssText = `width:${sz}px;height:${sz}px;background:${col};left:${cx}px;top:${cy}px;--tx:${tx};--ty:${ty};--d:${d};box-shadow:0 0 6px ${col};`;
+    c.appendChild(p);
+    setTimeout(() => p.remove(), parseFloat(d) * 1000 + 50);
+  }
+}
+</script>
+</body>
+</html>
